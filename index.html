@@ -959,13 +959,24 @@
           width: 100%;
         }
       }
-      @media (max-width: 500px) {
+     
+/* 📱 Mobile adjustments */
+@media (max-width: 768px) {
   .confession-message {
-    height: 100%;
-    padding: 2.1rem;
-    transform: translate(-50%, 20px) scale(0.55);
+    width: 95%;          /* nearly full width on small screens */
+    padding: 1.2rem;     /* tighter spacing */
+    font-size: 1rem;     /* smaller text for readability */
+    max-height: 85vh;    /* avoid overflow */
   }
 }
+
+/* 💻 Large desktop adjustments */
+@media (min-width: 1600px) {
+  .confession-message {
+    width: 1200px;       /* cap width for readability */
+    padding: 3rem;       /* more breathing room */
+    font-size: 2rem;     /* larger text */
+  }}
 
     </style>
   </head>
