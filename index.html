@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A Little Bouquet For You</title>
+    <style>
+      :root {
+        --bg: #f4efe9;
+        --bg-strong: #efe7df;
+        --paper: rgba(152, 176, 194, 0.22);
+        --paper-2: rgba(255, 255, 255, 0.72);
+        --text: #6a3d3e;
+        --rose: #a61b32;
+        --rose-dark: #7d1023;
+        --rose-deep: #8e1630;
+        --pink: #e8b2c3;
+        --white: #f7f2ee;
+        --purple: #c6b1d8;
+        --yellow: #f3d16d;
+        --orange: #ec9d4a;
+        --leaf: #6d8f66;
+        --leaf-dark: #496a4d;
+        --ribbon: #b3193c;
+        --ribbon-dark: #7d0d2c;
+        --shadow: rgba(67, 41, 34, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        min-height: 200%;
+        scroll-behavior: smooth;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background:
+          radial-gradient(circle at 1px 1px, rgba(122, 98, 71, 0.12) 1px, transparent 0) 0 0 / 14px 14px,
+          linear-gradient(0deg, rgba(255,255,255,0.38), rgba(255,255,255,0.38)),
+          var(--bg);
+        color: var(--text);
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+      }
+
+      .page-shell {
+        width: min(1200px, 100%);
+        min-height: 100vh;
+        padding: 24px 28px 70px;
+        opacity: 0.96;
+        transform: scale(0.96);
+        transform-origin: center top;
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      .page-shell.revealed {
+        opacity: 1;
+        transform: scale(1.02);
+      }
+
+      .top-tag {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        font-size: 0.84rem;
+        letter-spacing: 0.28rem;
+        text-transform: lowercase;
+        color: rgba(116, 72, 77, 0.9);
+        opacity: 0.9;
+      }
+
+      .top-tag .heart {
+        font-size: 1rem;
+        transform: translateY(-1px);
+      }
+
+      .quote-block {
+        position: relative;
+        max-width: 1180px;
+        margin: 48px auto 0;
+        text-align: center;
+      }
+
+      .quote-text {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.5rem, 4vw, 5rem);
+        font-style: italic;
+        line-height: 1.15;
+        color: rgba(117, 52, 82, 0.9);
+        font-weight: 600;
+        letter-spacing: -0.04em;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.65);
+      }
+
+      .quote-text .heart-mini {
+        display: inline-block;
+        font-size: 0.55em;
+        margin-left: 0.16em;
+        transform: translateY(-0.13em);
+        color: #d7577a;
+        filter: drop-shadow(0 0 10px rgba(214, 99, 140, 0.38));
+      }
+
+      .open-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        margin-top: 24px;
+        padding: 0.9rem 2.1rem;
+        background: linear-gradient(180deg, #9c2f49 0%, #7a1b33 100%);
+        color: #fff3f8;
+        border: none;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 1.08rem;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(101, 36, 52, 0.18), inset 0 1px 0 rgba(255,255,255,0.2);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .open-button:hover {
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0 14px 24px rgba(101, 36, 52, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+      }
+
+      .divider {
+        max-width: 1100px;
+        margin: 32px auto 0;
+        border-top: 1px solid rgba(130, 97, 102, 0.25);
+      }
+
+      .main-card {
+        width: min(1120px, 100%);
+        margin: 26px auto 0;
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 58px;
+        align-items: center;
+      }
+
+      .note-copy {
+        padding-left: 14px;
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        font-size: 0.9rem;
+        letter-spacing: 0.32rem;
+        text-transform: uppercase;
+        color: rgba(127, 90, 95, 0.9);
+      }
+
+      .headline {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(3.1rem, 5vw, 6rem);
+        line-height: 0.9;
+        letter-spacing: -0.06em;
+        color: rgba(122, 50, 67, 0.94);
+        font-weight: 700;
+      }
+
+      .subcopy {
+        margin-top: 26px;
+        max-width: 520px;
+        font-size: clamp(1.1rem, 1.55vw, 1.5rem);
+        line-height: 1.6;
+        color: rgba(117, 92, 94, 0.8);
+      }
+
+      .bouquet-panel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 620px;
+        opacity: 0;
+        transform: translateY(24px) scale(0.85);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        pointer-events: none;
+      }
+
+      .bouquet-panel.revealed {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      .envelope-stage {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 26px auto 0;
+        opacity: 0;
+        transform: translateY(24px) scale(0.86);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        pointer-events: none;
+      }
+
+      .envelope-stage.revealed {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      .envelope-stage.typing {
+        transform: translateY(0) scale(1.04);
+      }
+
+      .envelope::before,
+      .envelope::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+      }
+
+      .envelope::before {
+        clip-path: polygon(0 0, 100% 0, 50% 58%);
+        background: linear-gradient(180deg, #f9eef0 0%, #f2dfe4 100%);
+      }
+
+      .envelope::after {
+        clip-path: polygon(0 0, 50% 58%, 0 100%);
+        background: linear-gradient(180deg, rgba(245, 216, 224, 0.8) 0%, rgba(232, 204, 214, 0.7) 100%);
+      }
+
+      .envelope-top {
+        position: absolute;
+        inset: 0;
+        clip-path: polygon(100% 0, 50% 58%, 0 0);
+        background: linear-gradient(180deg, #fdfbfb 0%, #f1dbe0 100%);
+      }
+
+      .envelope-top::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(170, 108, 129, 0.08));
+      }
+
+      .letter {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        width: 72%;
+        height: 54%;
+        transform: translate(-50%, -50%);
+        border-radius: 14px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(247, 240, 237, 0.82));
+        border: 1px solid rgba(137, 94, 101, 0.12);
+        box-shadow: 0 10px 18px rgba(90, 62, 76, 0.06);
+        overflow: hidden;
+      }
+
+      .letter::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(211, 170, 182, 0.06), rgba(255,255,255,0.1));
+      }
+
+      .letter-heart {
+        position: absolute;
+        left: 50%;
+        top: 28%;
+        transform: translateX(-50%);
+        font-size: 2.1rem;
+        color: #cf4b6f;
+        text-shadow: 0 0 10px rgba(224, 92, 127, 0.2);
+      }
+
+      .envelope-bloom {
+        position: absolute;
+        left: 50%;
+        bottom: 18px;
+        width: 88px;
+        height: 88px;
+        transform: translateX(-50%);
+        filter: drop-shadow(0 6px 8px rgba(124, 62, 62, 0.14));
+      }
+
+      .envelope-bloom .bloom-core {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 18px;
+        height: 18px;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #fff6f7, #d56677 38%, #8d1b30 100%);
+      }
+
+      .envelope-bloom .petal {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 18px;
+        height: 28px;
+        margin-left: -9px;
+        margin-top: -14px;
+        border-radius: 70% 30% 70% 30%;
+        background: linear-gradient(180deg, #eb4d63, #a21432);
+        transform-origin: 50% 100%;
+      }
+
+      .envelope-bloom .petal:nth-child(1) { transform: rotate(-42deg) translate(0, -10px); }
+      .envelope-bloom .petal:nth-child(2) { transform: rotate(-14deg) translate(8px, -12px); }
+      .envelope-bloom .petal:nth-child(3) { transform: rotate(14deg) translate(10px, 0); }
+      .envelope-bloom .petal:nth-child(4) { transform: rotate(42deg) translate(2px, 12px); }
+      .envelope-bloom .petal:nth-child(5) { transform: rotate(72deg) translate(-10px, 8px); }
+      .envelope-bloom .petal:nth-child(6) { transform: rotate(-72deg) translate(-10px, -8px); }
+
+      .confession-message {
+        max-width: 880px;
+        margin: 22px auto 0;
+        padding: 1.2rem 1.4rem 1.4rem;
+        border: 1px solid rgba(148, 26, 10, 0.2);
+        border-radius: 20px;
+        background: rgba(224, 11, 11, 0.18);
+        color: rgba(109, 64, 80, 0.94);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+        white-space: pre-line;
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .bouquet-wrap {
+        position: relative;
+        width: min(100%, 540px);
+        height: 640px;
+        margin: 0 auto;
+        filter: drop-shadow(0 15px 30px rgba(80, 57, 49, 0.12));
+        animation: bouquetIn 1.5s ease-out both;
+      }
+
+      .bouquet-wrap:hover {
+        filter: drop-shadow(0 18px 34px rgba(92, 50, 64, 0.18));
+      }
+
+      .bouquet-wrap:active { cursor: pointer; }
+
+      .bouquet {
+        position: absolute;
+        left: 50%;
+        bottom: 10px;
+        width: 480px;
+        height: 570px;
+        transform: translateX(-50%);
+        animation: sway 7.2s ease-in-out infinite alternate;
+        transform-origin: center bottom;
+      }
+
+      .bouquet-wrap.is-bouncing .bouquet {
+        animation: bounceSway 0.82s cubic-bezier(.18,.75,.2,1.2) both;
+      }
+
+      .shadow-base {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 340px;
+        height: 44px;
+        background: radial-gradient(closest-side, rgba(61, 38, 39, 0.23), transparent 72%);
+        transform: translateX(-50%);
+        filter: blur(4px);
+      }
+
+      .paper-layer {
+        position: absolute;
+        left: 50%;
+        bottom: 82px;
+        width: 420px;
+        height: 250px;
+        transform: translateX(-50%);
+        border-radius: 44% 56% 40% 60% / 55% 48% 52% 45%;
+        border: 1px solid rgba(90, 114, 127, 0.18);
+        box-shadow: inset 0 8px 14px rgba(255,255,255,0.23), inset 0 -12px 18px rgba(131, 146, 159, 0.12), 0 18px 25px rgba(122, 117, 110, 0.12);
+      }
+
+      .paper-layer::before,
+      .paper-layer::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+      }
+
+      .paper-layer.blue {
+        background: linear-gradient(180deg, rgba(155, 177, 196, 0.80), rgba(148, 165, 181, 0.78));
+        width: 440px;
+        height: 250px;
+        transform: translateX(-50%) rotate(-2deg);
+        z-index: 1;
+      }
+
+      .paper-layer.blue::before {
+        background: linear-gradient(95deg, rgba(255,255,255,0.44), rgba(255,255,255,0.06) 38%, rgba(255,255,255,0.12) 58%, transparent 72%);
+      }
+
+      .paper-layer.white {
+        background: linear-gradient(180deg, rgba(252,250,248,0.78), rgba(240,236,232,0.75));
+        width: 410px;
+        height: 240px;
+        transform: translateX(-50%) rotate(4deg) translateY(14px);
+        z-index: 2;
+      }
+
+      .paper-layer.white::before {
+        background: linear-gradient(100deg, rgba(255,255,255,0.6), rgba(255,255,255,0.06) 30%, rgba(174, 194, 212, 0.12) 62%, transparent 78%);
+      }
+
+      .paper-layer.translucent {
+        background: linear-gradient(180deg, rgba(190, 210, 219, 0.25), rgba(156, 174, 187, 0.16));
+        width: 390px;
+        height: 220px;
+        transform: translateX(-50%) rotate(-5deg) translateY(18px);
+        z-index: 3;
+        border-color: rgba(102, 127, 144, 0.15);
+      }
+
+      .paper-layer.translucent::before {
+        background: linear-gradient(110deg, rgba(255,255,255,0.5), transparent 30%, rgba(137,147,160,0.18) 60%, transparent 100%);
+      }
+
+      .flares {
+        position: absolute;
+        left: 50%;
+        bottom: 182px;
+        width: 420px;
+        height: 128px;
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+
+      .flare {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        filter: blur(12px);
+        opacity: 0.67;
+      }
+
+      .flare.one { left: 10%; width: 130px; height: 60px; }
+      .flare.two { left: 38%; width: 110px; height: 70px; }
+      .flare.three { right: 12%; width: 120px; height: 58px; }
+
+      .stems {
+        position: absolute;
+        left: 50%;
+        bottom: 130px;
+        width: 280px;
+        height: 260px;
+        transform: translateX(-50%);
+        z-index: 6;
+      }
+
+      .stem {
+        position: absolute;
+        width: 7px;
+        border-radius: 50px;
+        background: linear-gradient(180deg, #7aab74 0%, #5c7e5c 50%, #446548 100%);
+        box-shadow: inset -1px 0 0 rgba(255,255,255,0.2);
+      }
+
+      .stem.s1 { left: 48%; bottom: 0; height: 200px; transform: rotate(-5deg); }
+      .stem.s2 { left: 33%; bottom: 0; height: 160px; transform: rotate(-12deg); }
+      .stem.s3 { left: 61%; bottom: 0; height: 180px; transform: rotate(10deg); }
+      .stem.s4 { left: 42%; bottom: 0; height: 196px; transform: rotate(7deg); }
+      .stem.s5 { left: 57%; bottom: 10px; height: 150px; transform: rotate(-16deg); }
+      .stem.s6 { left: 24%; bottom: 8px; height: 170px; transform: rotate(-18deg); }
+      .stem.s7 { left: 74%; bottom: 6px; height: 155px; transform: rotate(15deg); }
+
+      .leaf {
+        position: absolute;
+        width: 56px;
+        height: 86px;
+        border-radius: 68% 0 68% 0 / 100% 0 100% 0;
+        background: linear-gradient(135deg, #95b785 0%, #6f9a67 38%, #4d704f 100%);
+        border: 1px solid rgba(36, 68, 44, 0.14);
+        box-shadow: inset -5px -7px 8px rgba(37, 68, 42, 0.12);
+        transform-origin: bottom center;
+        z-index: 7;
+      }
+
+      .leaf::before {
+        content: "";
+        position: absolute;
+        left: 52%;
+        top: 10%;
+        width: 2px;
+        height: 75%;
+        background: rgba(44, 71, 44, 0.5);
+        transform: translateX(-50%) rotate(8deg);
+      }
+
+      .leaf::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(120deg, rgba(255,255,255,0.2), transparent 38%);
+      }
+
+      .leaf.l1 { left: 42%; bottom: 130px; transform: rotate(-28deg); }
+      .leaf.l2 { left: 28%; bottom: 120px; transform: rotate(-52deg) scale(0.9); }
+      .leaf.l3 { left: 58%; bottom: 128px; transform: rotate(26deg) scale(0.9); }
+      .leaf.l4 { left: 22%; bottom: 80px; transform: rotate(-35deg) scale(0.75); }
+      .leaf.l5 { left: 67%; bottom: 92px; transform: rotate(38deg) scale(0.8); }
+      .leaf.l6 { left: 50%; bottom: 90px; transform: rotate(18deg) scale(0.85); }
+      .leaf.l7 { left: 34%; bottom: 186px; transform: rotate(-18deg) scale(0.7); }
+      .leaf.l8 { left: 58%; bottom: 188px; transform: rotate(16deg) scale(0.75); }
+
+      .flower {
+        position: absolute;
+        width: 94px;
+        height: 120px;
+        z-index: 12;
+      }
+
+      .flower .head {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 84px;
+        height: 84px;
+        transform: translateX(-50%);
+      }
+
+      .flower .bud {
+        position: absolute;
+        left: 50%;
+        top: 26px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 32% 30%, rgba(255,255,255,0.62), rgba(255,255,255,0) 26%), var(--bud-color, #9d1731);
+        transform: translateX(-50%);
+        box-shadow: 0 2px 2px rgba(61, 29, 28, 0.12);
+        z-index: 6;
+      }
+
+      .red .bud { --bud-color: #8b1227; }
+      .white .bud { --bud-color: #fff5f5; }
+      .pink .bud { --bud-color: #cd9ea8; }
+      .purple .bud { --bud-color: #a78db8; }
+      .yellow .bud { --bud-color: #d5a841; }
+
+      .petal {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 42px;
+        height: 52px;
+        margin-left: -21px;
+        margin-top: -26px;
+        border-radius: 54% 46% 56% 44% / 62% 38% 62% 38%;
+        transform-origin: 50% 88%;
+        background: var(--petal-color, var(--rose));
+        box-shadow: inset -4px -4px 5px rgba(0,0,0,0.06), inset 6px 6px 10px rgba(255,255,255,0.12);
+        z-index: 2;
+      }
+
+      .red .petal { --petal-color: linear-gradient(135deg, #d5405b 0%, #b61c37 38%, #7c1127 100%); background: var(--petal-color); }
+      .pink .petal { --petal-color: linear-gradient(135deg, #f2d3d9 0%, #e1a7b8 38%, #d190a3 100%); background: var(--petal-color); }
+      .white .petal { --petal-color: linear-gradient(135deg, #fffdfd 0%, #f6f3f2 34%, #e7e4e1 100%); background: var(--petal-color); }
+      .purple .petal { --petal-color: linear-gradient(135deg, #ecdef8 0%, #d4bddf 30%, #b299d2 100%); background: var(--petal-color); }
+      .yellow .petal { --petal-color: linear-gradient(135deg, #f8efa1 0%, #f4d977 38%, #d9a540 100%); background: var(--petal-color); }
+
+      .red .petal:nth-child(1) { transform: rotate(-42deg) translate(4px, 0) scale(1.05); }
+      .red .petal:nth-child(2) { transform: rotate(-18deg) translate(10px, -8px) scale(1.04); }
+      .red .petal:nth-child(3) { transform: rotate(6deg) translate(12px, -16px) scale(1.09); }
+      .red .petal:nth-child(4) { transform: rotate(32deg) translate(0, -12px) scale(1.08); }
+      .red .petal:nth-child(5) { transform: rotate(58deg) translate(-12px, -10px) scale(1.02); }
+      .red .petal:nth-child(6) { transform: rotate(-56deg) translate(-10px, 20px) scale(0.9); }
+      .red .petal:nth-child(7) { transform: rotate(-18deg) translate(-18px, 10px) scale(0.94); }
+      .red .petal:nth-child(8) { transform: rotate(18deg) translate(18px, 12px) scale(0.94); }
+
+      .white .petal:nth-child(1), .pink .petal:nth-child(1), .purple .petal:nth-child(1), .yellow .petal:nth-child(1) {
+        transform: rotate(-48deg) translate(6px, 0) scale(0.96);
+      }
+      .white .petal:nth-child(2), .pink .petal:nth-child(2), .purple .petal:nth-child(2), .yellow .petal:nth-child(2) {
+        transform: rotate(-18deg) translate(12px, -8px) scale(0.96);
+      }
+      .white .petal:nth-child(3), .pink .petal:nth-child(3), .purple .petal:nth-child(3), .yellow .petal:nth-child(3) {
+        transform: rotate(10deg) translate(14px, -18px) scale(1.02);
+      }
+      .white .petal:nth-child(4), .pink .petal:nth-child(4), .purple .petal:nth-child(4), .yellow .petal:nth-child(4) {
+        transform: rotate(42deg) translate(2px, -12px) scale(1);
+      }
+      .white .petal:nth-child(5), .pink .petal:nth-child(5), .purple .petal:nth-child(5), .yellow .petal:nth-child(5) {
+        transform: rotate(68deg) translate(-12px, -10px) scale(0.9);
+      }
+      .white .petal:nth-child(6), .pink .petal:nth-child(6), .purple .petal:nth-child(6), .yellow .petal:nth-child(6) {
+        transform: rotate(-72deg) translate(-8px, 10px) scale(0.82);
+      }
+
+      .rose-large { width: 126px; height: 146px; }
+      .rose-large .head { width: 110px; height: 110px; }
+      .rose-large .petal { width: 52px; height: 62px; margin-left: -26px; margin-top: -31px; }
+
+      .flower.red { --flower-color: #b51d38; }
+      .flower.white { --flower-color: #fefaf8; }
+      .flower.pink { --flower-color: #e8bac7; }
+      .flower.purple { --flower-color: #d2c0e5; }
+      .flower.yellow { --flower-color: #f0c563; }
+
+      .flower.red .head { filter: drop-shadow(0 10px 8px rgba(89, 20, 35, 0.1)); }
+      .flower.white .head, .flower.pink .head, .flower.purple .head, .flower.yellow .head { filter: drop-shadow(0 8px 7px rgba(93, 69, 58, 0.08)); }
+
+      .flower .stem-actual {
+        position: absolute;
+        left: 50%;
+        bottom: -24px;
+        width: 6px;
+        height: 72px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #7aa876 0%, #557e59 42%, #3a5f3d 100%);
+        transform: translateX(-50%);
+        box-shadow: inset -1px 0 0 rgba(255,255,255,0.2);
+      }
+
+      .flower.red.g1 { left: 39%; bottom: 190px; transform: rotate(-5deg); }
+      .flower.red.g2 { left: 52%; bottom: 196px; transform: rotate(6deg) scale(1.08); }
+      .flower.red.g3 { left: 29%; bottom: 150px; transform: rotate(-16deg) scale(0.96); }
+      .flower.red.g4 { left: 66%; bottom: 160px; transform: rotate(14deg) scale(0.98); }
+      .flower.red.g5 { left: 48%; bottom: 240px; transform: rotate(3deg) scale(1.16); }
+      .flower.red.g6 { left: 34%; bottom: 235px; transform: rotate(-10deg) scale(1.06); }
+      .flower.red.g7 { left: 58%; bottom: 222px; transform: rotate(12deg) scale(1.02); }
+      .flower.red.g8 { left: 24%; bottom: 205px; transform: rotate(-18deg) scale(0.82); }
+      .flower.red.g9 { left: 70%; bottom: 212px; transform: rotate(18deg) scale(0.8); }
+      .flower.red.g10 { left: 41%; bottom: 286px; transform: rotate(-4deg) scale(1.18); }
+      .flower.red.g11 { left: 53%; bottom: 288px; transform: rotate(8deg) scale(1.2); }
+      .flower.red.g12 { left: 61%; bottom: 284px; transform: rotate(12deg) scale(1.1); }
+      .flower.red.g13 { left: 33%; bottom: 282px; transform: rotate(-11deg) scale(1.1); }
+      .flower.red.g14 { left: 47%; bottom: 318px; transform: rotate(-2deg) scale(1.32); }
+
+      .flower.white.g15 { left: 44%; bottom: 205px; transform: rotate(-8deg) scale(0.72); }
+      .flower.white.g16 { left: 56%; bottom: 218px; transform: rotate(7deg) scale(0.74); }
+      .flower.white.g17 { left: 39%; bottom: 244px; transform: rotate(-12deg) scale(0.68); }
+      .flower.white.g18 { left: 61%; bottom: 246px; transform: rotate(14deg) scale(0.66); }
+      .flower.white.g19 { left: 48%; bottom: 166px; transform: rotate(3deg) scale(0.66); }
+      .flower.white.g20 { left: 28%; bottom: 260px; transform: rotate(-21deg) scale(0.62); }
+
+      .flower.pink.g21 { left: 63%; bottom: 256px; transform: rotate(18deg) scale(0.63); }
+      .flower.pink.g22 { left: 31%; bottom: 174px; transform: rotate(-8deg) scale(0.62); }
+      .flower.purple.g23 { left: 21%; bottom: 248px; transform: rotate(-22deg) scale(0.6); }
+      .flower.purple.g24 { left: 71%; bottom: 179px; transform: rotate(20deg) scale(0.6); }
+      .flower.yellow.g25 { left: 50%; bottom: 130px; transform: rotate(4deg) scale(0.55); }
+      .flower.yellow.g26 { left: 35%; bottom: 116px; transform: rotate(-20deg) scale(0.52); }
+      .flower.yellow.g27 { left: 61%; bottom: 112px; transform: rotate(18deg) scale(0.52); }
+
+      .ribbon-wrap {
+        position: absolute;
+        left: 50%;
+        bottom: 7px;
+        width: 210px;
+        height: 140px;
+        transform: translateX(-50%);
+        z-index: 30;
+      }
+
+      .ribbon-knot {
+        position: absolute;
+        left: 50%;
+        bottom: 6px;
+        width: 74px;
+        height: 54px;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #ca2d52, #8d1234 44%, #710d2d 100%);
+        border-radius: 20px 20px 26px 26px;
+        box-shadow: inset 0 4px 0 rgba(255,255,255,0.18), inset 0 -6px 6px rgba(66, 0, 15, 0.1);
+      }
+
+      .ribbon-loop {
+        position: absolute;
+        width: 74px;
+        height: 70px;
+        background: linear-gradient(135deg, #d53457 0%, #9e1739 46%, #7f0d2b 100%);
+        border-radius: 60% 40% 58% 42% / 60% 40% 60% 40%;
+        box-shadow: inset 0 3px 0 rgba(255,255,255,0.22), inset 0 -8px 8px rgba(51, 20, 25, 0.12);
+      }
+
+      .ribbon-loop.left {
+        left: 16px;
+        bottom: 34px;
+        transform: rotate(-24deg);
+      }
+
+      .ribbon-loop.right {
+        right: 16px;
+        bottom: 34px;
+        transform: rotate(24deg);
+      }
+
+      .ribbon-tail {
+        position: absolute;
+        bottom: 12px;
+        width: 24px;
+        height: 118px;
+        background: linear-gradient(180deg, #c82a4d, #8d1438 44%, #70112b 100%);
+        border-radius: 18px;
+        box-shadow: inset 0 2px 0 rgba(255,255,255,0.12);
+      }
+
+      .ribbon-tail.left {
+        left: 58px;
+        transform: rotate(18deg);
+      }
+
+      .ribbon-tail.right {
+        right: 58px;
+        transform: rotate(-18deg);
+      }
+
+      .ribbon-tail::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -24px;
+        width: 22px;
+        height: 42px;
+        border-radius: 0 0 18px 18px;
+        transform: translateX(-50%);
+        background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.0));
+      }
+
+      .bouquet-wrap:hover .bouquet {
+        animation-duration: 4.8s;
+      }
+
+      .bouquet-wrap:hover .bouquet::after {
+        opacity: 1;
+      }
+
+      .bouquet-glow {
+        position: absolute;
+        left: 50%;
+        bottom: 110px;
+        width: 360px;
+        height: 360px;
+        transform: translateX(-50%);
+        background: radial-gradient(circle, rgba(255,255,255,0.46), rgba(255,255,255,0.1) 38%, transparent 68%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        filter: blur(18px);
+        pointer-events: none;
+      }
+
+      .bouquet-wrap:hover .bouquet-glow {
+        opacity: 1;
+      }
+
+      .floating-petals,
+      .floating-hearts {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .floating-petals span,
+      .floating-hearts span {
+        position: absolute;
+        opacity: 0;
+      }
+
+      .floating-petals span {
+        width: 12px;
+        height: 18px;
+        background: linear-gradient(180deg, rgba(215, 64, 92, 0.9), rgba(152, 26, 58, 0.9));
+        border-radius: 70% 0 70% 0;
+        transform: rotate(35deg);
+        animation: floatPetal 5.8s linear infinite;
+      }
+
+      .floating-hearts span {
+        color: #d8476d;
+        font-size: 1.1rem;
+        animation: floatHeart 5.6s ease-in-out infinite;
+        text-shadow: 0 0 12px rgba(221, 99, 140, 0.28);
+      }
+
+      .confession-box {
+        max-width: 980px;
+        margin: 28px auto 0;
+        text-align: center;
+      }
+
+      .confession-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 1.7rem;
+        min-width: 320px;
+        border: 1px solid rgba(120, 71, 84, 0.28);
+        border-radius: 999px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.18));
+        color: #7d2641;
+        font-size: 1.08rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .confession-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px rgba(122, 76, 80, 0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+      }
+
+.confession-message {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 100%;
+        height: 200%;
+        max-height: 200%;
+        padding: 5.4rem 5.1rem 5.1rem;
+        border: 1px solid rgba(132, 94, 89, 0.2);
+        border-radius: 28px;
+        background: rgba(255,255,255,0.6);
+        color: rgba(109, 64, 80, 0.94);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(1.05rem, 1.8vw, 1.7rem);
+        line-height: 1.5;
+        letter-spacing: -0.02em;
+        white-space: pre-line;
+        overflow-y: auto;
+        overflow-x: hidden;
+        opacity: 0;
+        transform: translate(-50%, 26px) scale(0.55);
+        transform-origin: center bottom;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        z-index: 8;
+        box-shadow: 0 12px 18px rgba(87, 54, 62, 0.08);
+        pointer-events: auto;
+      }
+
+
+      .confession-message.visible {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+      }
+
+      .envelope-stage.typing .confession-message.visible {
+        transform: translate(-50%, 0) scale(1.04);
+      }
+      
+      @keyframes sway {
+        0% { transform: translateX(-50%) rotate(-2deg); }
+        50% { transform: translateX(-50%) rotate(2deg); }
+        100% { transform: translateX(-50%) rotate(-1.5deg); }
+      }
+
+      @keyframes bouquetIn {
+        0% {
+          opacity: 0;
+          transform: translateY(28px) scale(0.96);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes bounceSway {
+        0% { transform: translateX(-50%) rotate(-6deg) translateY(0); }
+        28% { transform: translateX(-50%) rotate(5deg) translateY(-14px); }
+        48% { transform: translateX(-50%) rotate(-4deg) translateY(3px); }
+        68% { transform: translateX(-50%) rotate(3deg) translateY(-6px); }
+        100% { transform: translateX(-50%) rotate(-1deg) translateY(0); }
+      }
+
+      @keyframes floatPetal {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) rotate(0deg) scale(0.6);
+        }
+        14% { opacity: 1; }
+        100% {
+          opacity: 0;
+          transform: translate3d(var(--x), -180px, 0) rotate(250deg) scale(1.15);
+        }
+      }
+
+      @keyframes floatHeart {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) scale(0.7) rotate(0deg);
+        }
+        10% { opacity: 1; }
+        100% {
+          opacity: 0;
+          transform: translate3d(var(--x), -170px, 0) scale(1.1) rotate(18deg);
+        }
+      }
+
+      @media (max-width: 900px) {
+        .main-card {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          text-align: center;
+        }
+
+        .note-copy {
+          padding-left: 0;
+          max-width: 700px;
+          margin: 0 auto;
+        }
+
+        .subcopy {
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .page-shell {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+
+        .quote-text {
+          font-size: 2.5rem;
+        }
+
+        .open-button {
+          min-width: 240px;
+          width: 100%;
+        }
+
+        .bouquet-wrap {
+          width: min(100%, 420px);
+          height: 540px;
+        }
+
+        .bouquet {
+          transform: translateX(-50%) scale(0.9);
+          transform-origin: center bottom;
+        }
+
+        .qr-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+          width: 100%;
+        }
+      }
+      @media (max-width: 768px) {
+  .confession-message {
+    height: 90%;
+    padding: 1.6rem;
+    transform: translate(-50%, 20px) scale(0.55);
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="top-tag">
+        <span class="heart">♥</span>
+        <span>a little something</span>
+      </div>
+
+      <div class="quote-block">
+        <div class="quote-text">“Flowers fade, but the memories <span class="newline">they create last forever.</span><span class="heart-mini">♥</span>”</div>
+        <button class="open-button" type="button">Open a Little Surprise <span>💌</span></button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="main-card">
+        <div class="note-copy">
+          <p class="eyebrow">A Little Something for You</p>
+          <h1 class="headline">Coming from<br />someone special</h1>
+          <p class="subcopy">This is a small token of affection, meant to remind you of the joy and love you bring to my life.</p>
+        </div>
+
+        <div class="bouquet-panel">
+          <div class="bouquet-wrap" id="bouquetWrap" aria-label="Interactive flower bouquet" role="button" tabindex="0">
+            <div class="bouquet-glow"></div>
+            <div class="bouquet">
+              <div class="shadow-base"></div>
+
+              <div class="paper-layer blue"></div>
+              <div class="paper-layer white"></div>
+              <div class="paper-layer translucent"></div>
+
+              <div class="flares">
+                <span class="flare one"></span>
+                <span class="flare two"></span>
+                <span class="flare three"></span>
+              </div>
+
+              <div class="stems">
+                <span class="stem s1"></span>
+                <span class="stem s2"></span>
+                <span class="stem s3"></span>
+                <span class="stem s4"></span>
+                <span class="stem s5"></span>
+                <span class="stem s6"></span>
+                <span class="stem s7"></span>
+              </div>
+
+              <span class="leaf l1"></span>
+              <span class="leaf l2"></span>
+              <span class="leaf l3"></span>
+              <span class="leaf l4"></span>
+              <span class="leaf l5"></span>
+              <span class="leaf l6"></span>
+              <span class="leaf l7"></span>
+              <span class="leaf l8"></span>
+
+              <div class="flower rose-large red g14">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g1">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g2">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g3">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g4">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g5">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g6">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g7">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g8">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g9">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g10">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g11">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g12">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower red g13">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower white g15">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower white g16">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower white g17">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower white g18">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower white g19">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower white g20">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower pink g21">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower pink g22">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower purple g23">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower purple g24">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower yellow g25">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower yellow g26">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="flower yellow g27">
+                <div class="head">
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                  <span class="petal"></span>
+                </div>
+                <span class="bud"></span>
+                <span class="stem-actual"></span>
+              </div>
+
+              <div class="ribbon-wrap">
+                <div class="ribbon-loop left"></div>
+                <div class="ribbon-loop right"></div>
+                <div class="ribbon-tail left"></div>
+                <div class="ribbon-tail right"></div>
+                <div class="ribbon-knot"></div>
+              </div>
+            </div>
+
+            <div class="floating-petals" aria-hidden="true"></div>
+            <div class="floating-hearts" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="confession-box">
+        <button class="confession-button" id="confessionToggle" type="button">I Have Something to Tell You ❤️</button>
+
+        <div class="envelope-stage" id="envelopeStage" aria-hidden="true">
+          <div class="confession-message" id="confessionMessage">
+Hey, I’ve been wanting to tell you something for a while now.
+I honestly don’t know the perfect way to say this, but I’d rather be honest about how I feel than keep it to myself.
+Somewhere along the way, you became someone really special to me. 
+I find myself thinking about you more than I probably should, smiling whenever I see your messages, and appreciating even the little moments we share.
+I LIKE YOU. 
+Not just because of how beautiful you are, but because of the person you are — the way you make things feel lighter, the way you make me smile, and simply because being around you feels different in the best way.
+I’m not telling you this because I expect anything from you. I just wanted you to know what’s been in my heart.
+Whatever your answer is, I’ll respect it.
+But if there’s even a small chance that you feel the same way… I’d really like to see where this could take us. 
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      const pageShell = document.querySelector('.page-shell');
+      const bouquet = document.getElementById('bouquetWrap');
+      const bouquetPanel = document.querySelector('.bouquet-panel');
+      const envelopeStage = document.getElementById('envelopeStage');
+      const petalZone = document.querySelector('.floating-petals');
+      const heartZone = document.querySelector('.floating-hearts');
+      const confessionToggle = document.getElementById('confessionToggle');
+      const confessionMessage = document.getElementById('confessionMessage');
+
+      function createFloatingPetals() {
+        const colors = ['#d84664', '#f1c9cb', '#f6d38f', '#f7e4d8'];
+        for (let i = 0; i < 18; i++) {
+          const petal = document.createElement('span');
+          petal.style.left = `${Math.random() * 100}%`;
+          petal.style.top = `${Math.random() * 100}%`;
+          petal.style.setProperty('--x', `${(Math.random() - 0.5) * 140}px`);
+          petal.style.background = `linear-gradient(180deg, ${colors[i % colors.length]} 0%, rgba(146, 25, 51, 0.92) 100%)`;
+          petal.style.animationDelay = `${(Math.random() * 4).toFixed(2)}s`;
+          petal.style.animationDuration = `${(4 + Math.random() * 4).toFixed(2)}s`;
+          petal.style.transform = `rotate(${Math.random() * 360}deg)`;
+          petalZone.appendChild(petal);
+        }
+      }
+
+      function createFloatingHearts() {
+        const heartSymbols = ['❤', '♥', '❥'];
+        for (let i = 0; i < 10; i++) {
+          const heart = document.createElement('span');
+          heart.textContent = heartSymbols[i % heartSymbols.length];
+          heart.style.left = `${Math.random() * 100}%`;
+          heart.style.top = `${Math.random() * 100}%`;
+          heart.style.setProperty('--x', `${(Math.random() - 0.5) * 180}px`);
+          heart.style.animationDelay = `${(Math.random() * 6).toFixed(2)}s`;
+          heart.style.animationDuration = `${(4 + Math.random() * 4.5).toFixed(2)}s`;
+          heartZone.appendChild(heart);
+        }
+      }
+
+      function burstBouquet() {
+        bouquet.classList.remove('is-bouncing');
+        void bouquet.offsetWidth;
+        bouquet.classList.add('is-bouncing');
+
+        for (let i = 0; i < 14; i++) {
+          const petal = document.createElement('span');
+          petal.style.position = 'absolute';
+          petal.style.left = `${Math.random() * 72 + 14}%`;
+          petal.style.top = `${Math.random() * 65 + 18}%`;
+          petal.style.width = `${8 + Math.random() * 7}px`;
+          petal.style.height = `${12 + Math.random() * 10}px`;
+          petal.style.background = `linear-gradient(180deg, #f7d4d9 0%, #d74267 100%)`;
+          petal.style.borderRadius = '70% 0 70% 0';
+          petal.style.transform = 'rotate(30deg)';
+          petal.style.opacity = '0';
+          petal.style.pointerEvents = 'none';
+          petal.style.zIndex = '999';
+          petal.style.animation = `floatPetal ${1.8 + Math.random() * 1.5}s ease-out forwards`;
+          petal.style.setProperty('--x', `${(Math.random() - 0.5) * 100}px`);
+          petalZone.appendChild(petal);
+          setTimeout(() => petal.remove(), 2200);
+        }
+
+        for (let i = 0; i < 8; i++) {
+          const heart = document.createElement('span');
+          heart.textContent = ['❤', '♥'][i % 2];
+          heart.style.position = 'absolute';
+          heart.style.left = `${Math.random() * 68 + 16}%`;
+          heart.style.top = `${Math.random() * 52 + 24}%`;
+          heart.style.fontSize = `${18 + Math.random() * 12}px`;
+          heart.style.opacity = '0';
+          heart.style.pointerEvents = 'none';
+          heart.style.zIndex = '999';
+          heart.style.animation = `floatHeart ${1.8 + Math.random() * 1.2}s ease-out forwards`;
+          heart.style.setProperty('--x', `${(Math.random() - 0.5) * 120}px`);
+          heartZone.appendChild(heart);
+          setTimeout(() => heart.remove(), 2200);
+        }
+      }
+
+      bouquet.addEventListener('click', burstBouquet);
+      bouquet.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          burstBouquet();
+        }
+      });
+
+      function typeConfessionMessage() {
+        const fullText = confessionMessage.dataset.fullText || confessionMessage.textContent.trim();
+        confessionMessage.dataset.fullText = fullText;
+        confessionMessage.textContent = '';
+        confessionMessage.classList.add('visible');
+        envelopeStage.classList.add('typing');
+
+        let index = 0;
+        const typingSpeed = 35;
+
+        const typingInterval = setInterval(() => {
+          confessionMessage.textContent = fullText.slice(0, index + 1);
+          index += 1;
+
+          if (index >= fullText.length) {
+            clearInterval(typingInterval);
+            envelopeStage.classList.remove('typing');
+          }
+        }, typingSpeed);
+      }
+
+      function revealBouquetAndMessage() {
+        pageShell.classList.remove('revealed');
+        bouquetPanel.classList.add('revealed');
+        envelopeStage.classList.remove('revealed', 'typing');
+        confessionMessage.classList.remove('visible');
+        confessionMessage.textContent = confessionMessage.dataset.fullText || confessionMessage.textContent.trim();
+
+        setTimeout(() => {
+          envelopeStage.classList.add('revealed');
+        }, 50);
+
+        setTimeout(() => {
+          pageShell.classList.add('revealed');
+          typeConfessionMessage();
+          confessionMessage.scrollTop = 0;
+          confessionMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 1150);
+      }
+
+      confessionToggle.addEventListener('click', revealBouquetAndMessage);
+
+      const openButton = document.querySelector('.open-button');
+      openButton.addEventListener('click', revealBouquetAndMessage);
+
+      const initialMessage = confessionMessage.textContent.trim();
+      confessionMessage.dataset.fullText = initialMessage;
+      confessionMessage.textContent = '';
+
+      createFloatingPetals();
+      createFloatingHearts();
+    </script>
+  </body>
+</html>
